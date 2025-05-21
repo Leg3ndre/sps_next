@@ -1,0 +1,26 @@
+export const ACC = 0.1;
+export const RED_RATE = 0.995;
+export const INPUT_DELAY = 18;
+export const SHOOT_WAIT = 15;
+export const FREEZE_WAIT = 120.0;
+export const LIFE = 5;
+export const WIDTH = 400;
+
+export const ENEMY_Z = -100.0;
+export const MAN_HEIGHT = 20;
+export const LINE_START_Z = -90;
+export const LINE_END_Z = 100;
+export const LINE_SPLIT_X = 50;
+export const LINE_NUM_X = WIDTH * 2 / LINE_SPLIT_X;
+export const LINE_NUM_Y = 6;
+export const LINE_SPLIT_Y = (LINE_END_Z - LINE_START_Z) / LINE_NUM_Y;
+export const MAG_START = (-ENEMY_Z) / (LINE_START_Z - ENEMY_Z);
+export const MAG_END = (-ENEMY_Z) / (LINE_END_Z - ENEMY_Z);
+
+export const MAX_TAMA = 5;
+export const TAMA_START_Z = -90.0;
+export const TAMA_END_Z = 90.0;
+export const TAMA_SIZE = 5.0;
+
+export const PLAYER_COLOR = "red";
+export const ENEMY_COLOR = "lime";
