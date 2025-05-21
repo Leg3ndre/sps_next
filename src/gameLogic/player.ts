@@ -1,4 +1,5 @@
 import * as CONST from '@/constants/game';
+import Shot from './shot';
 
 const MAX_POSITION = CONST.WIDTH;
 const MIN_POSITION = -CONST.WIDTH;
@@ -8,7 +9,7 @@ class Player {
   position = 0.0;
   velocity = 0.0;
   actQueue: string[] = [];
-  shotList = [];
+  shotList: Shot[] = [];
   shotWait = 0;
   freeze = 0;
 
@@ -37,7 +38,15 @@ class Player {
     } else {
       this.velocity = 0.0;
     }
-    this.velocity *= CONST.PLAYER_DECELERATION_RATE;
+    this.velocity *= CONST.DECELERATION_RATE;
+
+    // Control of shots
+    for (const shot of this.shotList) {
+      shot.tick();
+    }
+    this.shotList = this.shotList.filter(t => t.isAlive);
+    if (this.shotWait > 0) this.shotWait--;
+    if (this.freeze > 0) this.freeze--;
   }
 
   private handleKeyPressed(keysPressed: { [index: string]: boolean }) {
@@ -54,25 +63,31 @@ class Player {
   }
 
   private processActQueue() {
-    if (this.actQueue.length > CONST.INPUT_DELAY) {
-      const act = this.actQueue.shift();
-      if (act == undefined) return;
+    if (this.actQueue.length <= CONST.INPUT_DELAY) return;
 
-      if (/l/.test(act)) {
-        this.accelerate(-CONST.PLAYER_ACCELERATION);
-      } else if (/r/.test(act)) {
-        this.accelerate(CONST.PLAYER_ACCELERATION);
-      }
-      if (/s/.test(act)) {
-        // this.shoot();
-      }
+    const act = this.actQueue.shift();
+    if (act == undefined) return;
+
+    if (this.freeze > 0) return;
+
+    if (/l/.test(act)) {
+      this.velocity -= CONST.ACCELERATION;
+    } else if (/r/.test(act)) {
+      this.velocity += CONST.ACCELERATION;
     }
+    if (/s/.test(act)) this.shoot();
   }
 
-  private accelerate(acceleration: number) {
-    if (this.freeze <= 0) {
-      this.velocity += acceleration;
-    }
+  private shoot() {
+    if (!this.canShot()) return;
+
+    const newShot = new Shot(this.position, CONST.SIDE_PLAYER);
+    this.shotList.push(newShot);
+    this.shotWait = CONST.SHOT_WAIT;
+  }
+
+  private canShot() {
+    return (this.shotList.length < CONST.MAX_SHOT_NUM && this.shotWait <= 0);
   }
 
   private isInMovableRange() {
