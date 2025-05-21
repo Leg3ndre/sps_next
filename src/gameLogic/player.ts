@@ -7,6 +7,7 @@ const MIN_POSITION = -CONST.WIDTH;
 class Player {
   private image;
 
+  life = CONST.INITIAL_LIFE;
   position = 0.0;
   private velocity = 0.0;
   private actQueue: string[] = [];
@@ -55,7 +56,10 @@ class Player {
     if (this.shotWait > 0) this.shotWait--;
     if (this.freeze > 0) this.freeze--;
 
-    if (this.isAttacked(enemyShots)) this.freeze = CONST.FREEZE_WAIT;
+    if (this.isAttacked(enemyShots)) {
+      this.life--;
+      this.freeze = CONST.FREEZE_WAIT;
+    }
   }
 
   private handleKeyPressed(keysPressed: { [index: string]: boolean }) {
@@ -107,11 +111,7 @@ class Player {
     if (this.freeze > 0) return false;
 
     for (const shot of enemyShots) {
-      if (shot.hits(this.position)) {
-        // this.score -= 1;
-        console.log("Player damaged!!");
-        return true;
-      }
+      if (shot.hits(this.position)) return true;
     }
     return false;
   }

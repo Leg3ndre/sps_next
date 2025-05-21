@@ -49,6 +49,7 @@ const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
     player.current.draw(ctx.current, enemy.current.position);
 
     player.current.tick(ctx.current, keysPressed, enemy.current.position, enemy.current.shotList);
+    setPlayerLife(player.current.life);
     enemy.current.tick(ctx.current, player.current.position);
   };
 
