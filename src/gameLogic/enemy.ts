@@ -8,7 +8,8 @@ class Enemy {
   position = 0.0;
   private velocity = 0.0;
   private direction = 0;
-  private shotList: Shot[] = [];
+
+  shotList: Shot[] = [];
   private shotWait = 0;
   private freeze = 0;
 

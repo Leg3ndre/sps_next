@@ -29,6 +29,7 @@ export const MAX_SHOT_NUM = 5;
 export const SHOT_START_Z = -90.0;
 export const SHOT_END_Z = 90.0;
 export const SHOT_SIZE = 5.0;
+export const SHOT_HIT_SIZE = 9.0;
 
 export const PLAYER_COLOR = "red";
 export const ENEMY_COLOR = "lime";

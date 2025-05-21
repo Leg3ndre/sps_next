@@ -1,10 +1,10 @@
 import * as CONST from '@/constants/game';
 
 class Shot {
-  x;
-  z;
-  side;
-  velocityZ = 1.0;
+  private x;
+  private z;
+  private side;
+  private velocityZ = 1.0;
   isAlive = true;
 
   constructor(position: number, side: number) {
@@ -15,15 +15,9 @@ class Shot {
 
   tick(ctx: CanvasRenderingContext2D, enemyPosition: number): void {
     this.z -= ((this.side == CONST.SIDE_PLAYER) ? 1.0 : -1.0) * this.velocityZ;
-    console.log("tick", this.z);
     this.updateAlive();
-
     this.draw(ctx, enemyPosition);
   }
-
-  // private dist(x1, y1, x2, y2) {
-  //   return Math.sqrt(Math.pow(x1 - x2, 2.0) + Math.pow(y1 - y2, 2.0));
-  // }
 
   private updateAlive() {
     if (this.side == CONST.SIDE_PLAYER) {
@@ -56,7 +50,7 @@ class Shot {
     );
   }
 
-  drawEnemySide(ctx: CanvasRenderingContext2D, enemyPosition: number) {
+  private drawEnemySide(ctx: CanvasRenderingContext2D, enemyPosition: number) {
     this.drawTriangle(
       ctx,
       (this.x - enemyPosition) * (-CONST.ENEMY_Z) / (this.z + CONST.SHOT_SIZE - CONST.ENEMY_Z) + 320,
@@ -69,7 +63,7 @@ class Shot {
     );
   }
 
-  drawTriangle(
+  private drawTriangle(
     ctx: CanvasRenderingContext2D,
     pt1x: number, pt1y: number,
     pt2x: number, pt2y: number,
@@ -84,6 +78,16 @@ class Shot {
     ctx.strokeStyle = color;
     ctx.lineWidth = 1;
     ctx.stroke();
+  }
+
+  hits(position: number) {
+    if (this.side == CONST.SIDE_ENEMY) {
+      return (this.distance(position, CONST.SHOT_END_Z, this.x, this.z) < CONST.SHOT_HIT_SIZE);
+    }
+  }
+
+  private distance(x1: number, z1: number, x2: number, z2: number) {
+    return Math.sqrt(Math.pow(x1 - x2, 2.0) + Math.pow(z1 - z2, 2.0));
   }
 }
 

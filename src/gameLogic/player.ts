@@ -10,7 +10,8 @@ class Player {
   position = 0.0;
   private velocity = 0.0;
   private actQueue: string[] = [];
-  private shotList: Shot[] = [];
+
+  shotList: Shot[] = [];
   private shotWait = 0;
   private freeze = 0;
 
@@ -33,6 +34,7 @@ class Player {
     ctx: CanvasRenderingContext2D,
     keysPressed: { [index: string]: boolean },
     enemyPosition: number,
+    enemyShots: Shot[],
   ): void {
     this.handleKeyPressed(keysPressed);
     this.processActQueue();
@@ -52,6 +54,8 @@ class Player {
     this.shotList = this.shotList.filter(t => t.isAlive);
     if (this.shotWait > 0) this.shotWait--;
     if (this.freeze > 0) this.freeze--;
+
+    if (this.isAttacked(enemyShots)) this.freeze = CONST.FREEZE_WAIT;
   }
 
   private handleKeyPressed(keysPressed: { [index: string]: boolean }) {
@@ -97,6 +101,19 @@ class Player {
 
   private isInMovableRange() {
     return (this.position + this.velocity <= MAX_POSITION && this.position + this.velocity >= MIN_POSITION);
+  }
+
+  private isAttacked(enemyShots: Shot[]) {
+    if (this.freeze > 0) return false;
+
+    for (const shot of enemyShots) {
+      if (shot.hits(this.position)) {
+        // this.score -= 1;
+        console.log("Player damaged!!");
+        return true;
+      }
+    }
+    return false;
   }
 }
 
