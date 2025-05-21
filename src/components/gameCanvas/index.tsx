@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import styles from './index.module.css';
 import useAnimateEffect from '@/hooks/animate';
 import Field from '@/gameLogic/field';
+import Player from '@/gameLogic/player';
 
 type Props = {
   setPlayerLife: (life: number) => void;
@@ -11,6 +12,7 @@ type Props = {
 const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
   const ctx = useRef<CanvasRenderingContext2D | null>(null);
   const field = useRef(new Field);
+  const player = useRef<Player | null>(null);
 
   useEffect(() => {
     const canvas = document.getElementById('game') as HTMLCanvasElement;
@@ -19,14 +21,23 @@ const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
     ctx.current = canvas.getContext('2d');
   }, []);
 
+  useEffect(() => {
+    player.current = new Player;
+  }, []);
+
   const animateCallback = () => {
     if (ctx.current == null) {
       console.log("Cannot find canvas context!!");
       return;
     }
+    if (player.current == null) {
+      console.log("Cannot create player object!!");
+      return;
+    }
 
     ctx.current.clearRect(0, 0, 640, 480);
     field.current.draw(ctx.current, 0.0);
+    player.current.draw(ctx.current, 0.0);
   };
 
   useAnimateEffect(animateCallback);

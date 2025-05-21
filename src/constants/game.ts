@@ -9,7 +9,7 @@ export const INITIAL_LIFE = 5;
 export const WIDTH = 400;
 
 export const ENEMY_Z = -100.0;
-export const MAN_HEIGHT = 20;
+export const PLAYER_HEIGHT = 20;
 export const LINE_START_Z = -90;
 export const LINE_END_Z = 100;
 export const LINE_SPLIT_X = 50;
