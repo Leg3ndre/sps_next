@@ -3,7 +3,7 @@ export const RED_RATE = 0.995;
 export const INPUT_DELAY = 18;
 export const SHOOT_WAIT = 15;
 export const FREEZE_WAIT = 120.0;
-export const LIFE = 5;
+export const INITIAL_LIFE = 5;
 export const WIDTH = 400;
 
 export const ENEMY_Z = -100.0;

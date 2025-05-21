@@ -1,19 +1,15 @@
-.gameCanvas{
-  background-color:black;
-}
-
 .scores{
   width:640px;
 }
 
-.plScore, .enScore{
+.plLife, .enLife{
   color:black;
   /* background-color:white; */
   display:inline-block;
 }
-.plScore{
+.plLife{
   float:left;
 }
-.enScore{
+.enLife{
   float:right;
 }
