@@ -49,7 +49,7 @@ class CharacterBase {
   protected shoot() {
     if (!this.canShot()) return;
 
-    var newShot = new Shot(this.position, this.side);
+    const newShot = new Shot(this.position, this.side);
     this.shotList.push(newShot);
     this.shotWait = CONST.SHOT_WAIT;
   }
