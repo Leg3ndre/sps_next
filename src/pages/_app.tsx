@@ -7,7 +7,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <Head>
         <title>SPS</title>
-        <link rel="icon" href="./favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Component {...pageProps} />
     </>
