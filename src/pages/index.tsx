@@ -3,6 +3,7 @@ import { useState } from 'react';
 import * as CONST from '@/constants/game';
 import GameDesc from '@/components/gameDesc';
 import GameCanvas from '@/components/gameCanvas';
+import RetryButton from '@/components/retryButton';
 
 export default function Home() {
   const [playerLife, setPlayerLine] = useState(CONST.INITIAL_LIFE);
@@ -19,7 +20,7 @@ export default function Home() {
         setPlayerLife={setPlayerLine}
         setEnemyLife={setEnemyLife}
       />
-      <a href="#">Retry</a>
+      <RetryButton />
       <GameDesc />
     </>
   );
