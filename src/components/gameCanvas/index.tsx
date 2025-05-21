@@ -47,10 +47,11 @@ const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
     ctx.current.clearRect(0, 0, 640, 480);
     field.current.draw(ctx.current, enemy.current.position);
     player.current.draw(ctx.current, enemy.current.position);
+    enemy.current.draw(ctx.current);
 
-    player.current.tick(ctx.current, keysPressed, enemy.current.position, enemy.current.shotList);
+    player.current.tick(keysPressed, enemy.current.shotList);
     setPlayerLife(player.current.life);
-    enemy.current.tick(ctx.current, player.current.position);
+    enemy.current.tick(player.current.position);
   };
 
   useAnimateEffect(animateCallback);

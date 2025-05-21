@@ -13,10 +13,9 @@ class Shot {
     this.z = (this.side == CONST.SIDE_PLAYER) ? CONST.SHOT_END_Z : CONST.SHOT_START_Z;
   }
 
-  tick(ctx: CanvasRenderingContext2D, enemyPosition: number): void {
+  tick(): void {
     this.z -= ((this.side == CONST.SIDE_PLAYER) ? 1.0 : -1.0) * this.velocityZ;
     this.updateAlive();
-    this.draw(ctx, enemyPosition);
   }
 
   private updateAlive() {
@@ -27,7 +26,7 @@ class Shot {
     }
   }
 
-  private draw(ctx: CanvasRenderingContext2D, enemyPosition: number) {
+  draw(ctx: CanvasRenderingContext2D, enemyPosition: number) {
     if (!this.isAlive) return;
 
     if (this.side == CONST.SIDE_PLAYER) {

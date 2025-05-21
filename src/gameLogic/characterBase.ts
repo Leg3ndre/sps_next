@@ -23,9 +23,15 @@ class CharacterBase {
     this.velocity *= CONST.DECELERATION_RATE;
   }
 
-  protected updateShots(ctx: CanvasRenderingContext2D, cameraPosition: number) {
+  protected drawShots(ctx: CanvasRenderingContext2D, cameraPosition: number) {
     for (const shot of this.shotList) {
-      shot.tick(ctx, cameraPosition);
+      shot.draw(ctx, cameraPosition);
+    }
+  }
+
+  protected updateShots() {
+    for (const shot of this.shotList) {
+      shot.tick();
     }
     this.shotList = this.shotList.filter(t => t.isAlive);
     if (this.shotWait > 0) this.shotWait--;

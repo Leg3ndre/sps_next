@@ -22,20 +22,19 @@ class Player extends CharacterBase {
       this.image.width * CONST.MAG_END,
       this.image.height * CONST.MAG_END
     );
+    this.drawShots(ctx, enemyPosition);
 
     if (this.freeze > 0) this.drawFreezed(ctx, enemyPosition);
   }
 
   tick(
-    ctx: CanvasRenderingContext2D,
     keysPressed: { [index: string]: boolean },
-    enemyPosition: number,
     enemyShots: Shot[],
   ): void {
     this.handleKeyPressed(keysPressed);
     this.processActQueue();
     this.updatePositionAndVelocity();
-    this.updateShots(ctx, enemyPosition);
+    this.updateShots();
     if (this.freeze > 0) this.freeze--;
 
     if (this.isAttacked(enemyShots)) {

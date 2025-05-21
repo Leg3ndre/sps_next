@@ -10,10 +10,14 @@ class Enemy extends CharacterBase {
     this.direction = (Math.random() * 10 < 5) ? -1 : 1;
   }
 
-  tick(ctx: CanvasRenderingContext2D, playerPosition: number) {
+  draw(ctx: CanvasRenderingContext2D) {
+    this.drawShots(ctx, this.position);
+  }
+
+  tick(playerPosition: number) {
     this.actAI(playerPosition);
     this.updatePositionAndVelocity();
-    this.updateShots(ctx, this.position);
+    this.updateShots();
     if (this.freeze > 0) this.freeze--;
   }
 
