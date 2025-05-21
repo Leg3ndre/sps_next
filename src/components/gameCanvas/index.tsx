@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import styles from './index.module.css';
 import useAnimateEffect from '@/hooks/animate';
+import useKeyboardEffect from '@/hooks/keyboard';
 import Field from '@/gameLogic/field';
 import Player from '@/gameLogic/player';
 
@@ -11,8 +12,14 @@ type Props = {
 
 const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
   const ctx = useRef<CanvasRenderingContext2D | null>(null);
+  const keysPressed = useKeyboardEffect();
   const field = useRef(new Field);
   const player = useRef<Player | null>(null);
+
+  useEffect(() => {
+    // 上下キーでスクロールが発生しないように
+    document.body.addEventListener("keydown", (e) => e.preventDefault());
+  }, []);
 
   useEffect(() => {
     const canvas = document.getElementById('game') as HTMLCanvasElement;
@@ -38,6 +45,8 @@ const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
     ctx.current.clearRect(0, 0, 640, 480);
     field.current.draw(ctx.current, 0.0);
     player.current.draw(ctx.current, 0.0);
+
+    player.current.tick(keysPressed);
   };
 
   useAnimateEffect(animateCallback);

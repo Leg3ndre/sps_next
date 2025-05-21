@@ -1,7 +1,7 @@
 import * as CONST from '@/constants/game';
 
 class Field {
-  draw(ctx: CanvasRenderingContext2D, enemyPosition: number) {
+  draw(ctx: CanvasRenderingContext2D, enemyPosition: number): void {
     for (let i = 0; i <= CONST.LINE_NUM_X; i++) {
       this.drawLine(
         ctx,

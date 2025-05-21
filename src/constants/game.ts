@@ -1,7 +1,7 @@
 export const FPS = 60.0;
 
-export const ACC = 0.1;
-export const RED_RATE = 0.995;
+export const PLAYER_ACCELERATION = 0.1;
+export const PLAYER_DECELERATION_RATE = 0.995;
 export const INPUT_DELAY = 18;
 export const SHOOT_WAIT = 15;
 export const FREEZE_WAIT = 120.0;
