@@ -28,7 +28,11 @@ class Player {
     );
   }
 
-  tick(keysPressed: { [index: string]: boolean }): void {
+  tick(
+    ctx: CanvasRenderingContext2D,
+    keysPressed: { [index: string]: boolean },
+    enemyPosition: number,
+  ): void {
     this.handleKeyPressed(keysPressed);
     this.processActQueue();
 
@@ -42,7 +46,7 @@ class Player {
 
     // Control of shots
     for (const shot of this.shotList) {
-      shot.tick();
+      shot.tick(ctx, enemyPosition);
     }
     this.shotList = this.shotList.filter(t => t.isAlive);
     if (this.shotWait > 0) this.shotWait--;

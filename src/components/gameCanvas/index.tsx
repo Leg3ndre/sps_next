@@ -46,7 +46,7 @@ const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
     field.current.draw(ctx.current, 0.0);
     player.current.draw(ctx.current, 0.0);
 
-    player.current.tick(keysPressed);
+    player.current.tick(ctx.current, keysPressed, 0.0);
   };
 
   useAnimateEffect(animateCallback);
