@@ -1,3 +1,5 @@
+export const FPS = 60.0;
+
 export const ACC = 0.1;
 export const RED_RATE = 0.995;
 export const INPUT_DELAY = 18;
