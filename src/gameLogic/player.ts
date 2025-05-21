@@ -1,5 +1,6 @@
 import * as CONST from '@/constants/game';
 import Shot from './shot';
+import { drawFrame } from './freezeUtil';
 
 const MAX_POSITION = CONST.WIDTH;
 const MIN_POSITION = -CONST.WIDTH;
@@ -29,6 +30,8 @@ class Player {
       this.image.width * CONST.MAG_END,
       this.image.height * CONST.MAG_END
     );
+
+    if (this.freeze > 0) this.drawFreezed(ctx, enemyPosition);
   }
 
   tick(
@@ -114,6 +117,24 @@ class Player {
       if (shot.hits(this.position)) return true;
     }
     return false;
+  }
+
+  private drawFreezed(ctx: CanvasRenderingContext2D, enemyPosition: number) {
+    const frz_w = [
+      50.0 * (1.0 - Math.pow(this.freeze / CONST.FREEZE_WAIT, 5.0)),
+      50.0 * (1.0 - Math.pow((this.freeze - 20) / CONST.FREEZE_WAIT, 5.0))
+    ];
+    for(let i = 0; i < 2; i++) {
+      drawFrame(
+        ctx,
+        (this.position - enemyPosition - frz_w[i] / 2.0) * CONST.MAG_END + 320,
+        (CONST.PLAYER_HEIGHT - this.image.height / 2.0 - frz_w[i] / 2.0) * CONST.MAG_END + 240,
+        (this.position - enemyPosition + frz_w[i] / 2.0) * CONST.MAG_END + 320,
+        (CONST.PLAYER_HEIGHT - this.image.height / 2.0 + frz_w[i] / 2.0) * CONST.MAG_END + 240,
+        "white",
+        1
+      );
+    }
   }
 }
 
