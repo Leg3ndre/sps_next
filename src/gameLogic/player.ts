@@ -1,23 +1,15 @@
 import * as CONST from '@/constants/game';
+import CharacterBase from './characterBase';
 import Shot from './shot';
 import { drawFrame } from './freezeUtil';
 
-const MAX_POSITION = CONST.WIDTH;
-const MIN_POSITION = -CONST.WIDTH;
-
-class Player {
+class Player extends CharacterBase {
+  protected side = CONST.SIDE_PLAYER;
   private image;
-
-  life = CONST.INITIAL_LIFE;
-  position = 0.0;
-  private velocity = 0.0;
   private actQueue: string[] = [];
 
-  shotList: Shot[] = [];
-  private shotWait = 0;
-  private freeze = 0;
-
   constructor() {
+    super();
     this.image = new Image;
     this.image.src = "/player.png";
   }
@@ -42,21 +34,8 @@ class Player {
   ): void {
     this.handleKeyPressed(keysPressed);
     this.processActQueue();
-
-    // Control of velocity
-    if (this.isInMovableRange()) {
-      this.position += this.velocity;
-    } else {
-      this.velocity = 0.0;
-    }
-    this.velocity *= CONST.DECELERATION_RATE;
-
-    // Control of shots
-    for (const shot of this.shotList) {
-      shot.tick(ctx, enemyPosition);
-    }
-    this.shotList = this.shotList.filter(t => t.isAlive);
-    if (this.shotWait > 0) this.shotWait--;
+    this.updatePositionAndVelocity();
+    this.updateShots(ctx, enemyPosition);
     if (this.freeze > 0) this.freeze--;
 
     if (this.isAttacked(enemyShots)) {
@@ -92,22 +71,6 @@ class Player {
       this.velocity -= CONST.ACCELERATION;
     }
     if (/s/.test(act)) this.shoot();
-  }
-
-  private shoot() {
-    if (!this.canShot()) return;
-
-    const newShot = new Shot(this.position, CONST.SIDE_PLAYER);
-    this.shotList.push(newShot);
-    this.shotWait = CONST.SHOT_WAIT;
-  }
-
-  private canShot() {
-    return (this.shotList.length < CONST.MAX_SHOT_NUM && this.shotWait <= 0);
-  }
-
-  private isInMovableRange() {
-    return (this.position + this.velocity <= MAX_POSITION && this.position + this.velocity >= MIN_POSITION);
   }
 
   private isAttacked(enemyShots: Shot[]) {
