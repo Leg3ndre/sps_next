@@ -23,24 +23,15 @@ class Player extends CharacterBase {
       this.image.height * CONST.MAG_END
     );
     this.drawShots(ctx, enemyPosition);
-
     if (this.freeze > 0) this.drawFreezed(ctx, enemyPosition);
   }
 
-  tick(
-    keysPressed: { [index: string]: boolean },
-    enemyShots: Shot[],
-  ): void {
+  tick(keysPressed: { [index: string]: boolean }, enemyShots: Shot[]): void {
     this.handleKeyPressed(keysPressed);
     this.processActQueue();
     this.updatePositionAndVelocity();
     this.updateShots();
-    if (this.freeze > 0) this.freeze--;
-
-    if (this.isAttacked(enemyShots)) {
-      this.life--;
-      this.freeze = CONST.FREEZE_WAIT;
-    }
+    this.updateLifeAndFreeze(enemyShots);
   }
 
   private handleKeyPressed(keysPressed: { [index: string]: boolean }) {
@@ -70,15 +61,6 @@ class Player extends CharacterBase {
       this.velocity -= CONST.ACCELERATION;
     }
     if (/s/.test(act)) this.shoot();
-  }
-
-  private isAttacked(enemyShots: Shot[]) {
-    if (this.freeze > 0) return false;
-
-    for (const shot of enemyShots) {
-      if (shot.hits(this.position)) return true;
-    }
-    return false;
   }
 
   private drawFreezed(ctx: CanvasRenderingContext2D, enemyPosition: number) {

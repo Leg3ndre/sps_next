@@ -80,7 +80,9 @@ class Shot {
   }
 
   hits(position: number) {
-    if (this.side == CONST.SIDE_ENEMY) {
+    if (this.side == CONST.SIDE_PLAYER) {
+      return (this.distance(position, CONST.SHOT_START_Z, this.x, this.z) < CONST.SHOT_HIT_SIZE);
+    } else {
       return (this.distance(position, CONST.SHOT_END_Z, this.x, this.z) < CONST.SHOT_HIT_SIZE);
     }
   }

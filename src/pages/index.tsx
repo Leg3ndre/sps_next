@@ -17,7 +17,7 @@ export default function Home() {
       </div>
       <GameCanvas
         setPlayerLife={setPlayerLine}
-        setScore={setEnemyLife}
+        setEnemyLife={setEnemyLife}
       />
       <a href="#">Retry</a>
       <GameDesc />

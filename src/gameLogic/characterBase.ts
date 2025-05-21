@@ -14,6 +14,12 @@ class CharacterBase {
   protected freeze = 0;
   protected side = CONST.SIDE_ENEMY;
 
+  protected drawShots(ctx: CanvasRenderingContext2D, cameraPosition: number) {
+    for (const shot of this.shotList) {
+      shot.draw(ctx, cameraPosition);
+    }
+  }
+
   protected updatePositionAndVelocity() {
     if (this.isInMovableRange()) {
       this.position += this.velocity;
@@ -23,18 +29,21 @@ class CharacterBase {
     this.velocity *= CONST.DECELERATION_RATE;
   }
 
-  protected drawShots(ctx: CanvasRenderingContext2D, cameraPosition: number) {
-    for (const shot of this.shotList) {
-      shot.draw(ctx, cameraPosition);
-    }
-  }
-
   protected updateShots() {
     for (const shot of this.shotList) {
       shot.tick();
     }
     this.shotList = this.shotList.filter(t => t.isAlive);
     if (this.shotWait > 0) this.shotWait--;
+  }
+
+  protected updateLifeAndFreeze(attackShots: Shot[]) {
+    if (this.freeze > 0) this.freeze--;
+
+    if (this.isAttacked(attackShots)) {
+      this.life--;
+      this.freeze = CONST.FREEZE_WAIT;
+    }
   }
 
   protected shoot() {
@@ -51,6 +60,15 @@ class CharacterBase {
 
   protected isInMovableRange() {
     return (this.position + this.velocity <= MAX_POSITION && this.position + this.velocity >= MIN_POSITION);
+  }
+
+  protected isAttacked(attackShots: Shot[]) {
+    if (this.freeze > 0) return false;
+
+    for (const shot of attackShots) {
+      if (shot.hits(this.position)) return true;
+    }
+    return false;
   }
 }
 

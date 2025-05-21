@@ -7,11 +7,11 @@ import Player from '@/gameLogic/player';
 import Enemy from '@/gameLogic/enemy';
 
 type Props = {
-  setPlayerLife: (life: number) => void;
-  setScore: (score: number) => void;
+  setPlayerLife: (playerLife: number) => void;
+  setEnemyLife: (enemyLife: number) => void;
 }
 
-const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
+const GameCanvas = ({ setPlayerLife, setEnemyLife }: Props) => {
   const ctx = useRef<CanvasRenderingContext2D | null>(null);
   const keysPressed = useKeyboardEffect();
   const field = useRef(new Field);
@@ -51,7 +51,8 @@ const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
 
     player.current.tick(keysPressed, enemy.current.shotList);
     setPlayerLife(player.current.life);
-    enemy.current.tick(player.current.position);
+    enemy.current.tick(player.current.position, player.current.shotList);
+    setEnemyLife(enemy.current.life);
   };
 
   useAnimateEffect(animateCallback);
