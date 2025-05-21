@@ -76,9 +76,9 @@ class Player {
     if (this.freeze > 0) return;
 
     if (/l/.test(act)) {
-      this.velocity -= CONST.ACCELERATION;
-    } else if (/r/.test(act)) {
       this.velocity += CONST.ACCELERATION;
+    } else if (/r/.test(act)) {
+      this.velocity -= CONST.ACCELERATION;
     }
     if (/s/.test(act)) this.shoot();
   }
