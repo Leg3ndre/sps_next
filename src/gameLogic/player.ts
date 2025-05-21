@@ -5,13 +5,14 @@ const MAX_POSITION = CONST.WIDTH;
 const MIN_POSITION = -CONST.WIDTH;
 
 class Player {
-  image;
+  private image;
+
   position = 0.0;
-  velocity = 0.0;
-  actQueue: string[] = [];
-  shotList: Shot[] = [];
-  shotWait = 0;
-  freeze = 0;
+  private velocity = 0.0;
+  private actQueue: string[] = [];
+  private shotList: Shot[] = [];
+  private shotWait = 0;
+  private freeze = 0;
 
   constructor() {
     this.image = new Image;

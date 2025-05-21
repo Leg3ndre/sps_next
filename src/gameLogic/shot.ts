@@ -28,6 +28,8 @@ class Shot {
   private updateAlive() {
     if (this.side == CONST.SIDE_PLAYER) {
       if (this.z <= CONST.SHOT_START_Z) this.isAlive = false;
+    } else {
+      if (this.z >= CONST.SHOT_END_Z) this.isAlive = false;
     }
   }
 
@@ -36,6 +38,8 @@ class Shot {
 
     if (this.side == CONST.SIDE_PLAYER) {
       this.drawPlayerSide(ctx, enemyPosition);
+    } else {
+      this.drawEnemySide(ctx, enemyPosition);
     }
   }
 
@@ -49,6 +53,19 @@ class Shot {
       (this.x - enemyPosition - CONST.SHOT_SIZE * 0.7) * (-CONST.ENEMY_Z) / (this.z + CONST.SHOT_SIZE * 0.7 - CONST.ENEMY_Z) + 320,
       CONST.PLAYER_HEIGHT * 0.33 * (-CONST.ENEMY_Z) / (this.z + CONST.SHOT_SIZE * 0.7 - CONST.ENEMY_Z) + 240,
       CONST.PLAYER_COLOR
+    );
+  }
+
+  drawEnemySide(ctx: CanvasRenderingContext2D, enemyPosition: number) {
+    this.drawTriangle(
+      ctx,
+      (this.x - enemyPosition) * (-CONST.ENEMY_Z) / (this.z + CONST.SHOT_SIZE - CONST.ENEMY_Z) + 320,
+      CONST.PLAYER_HEIGHT * 0.67 * (-CONST.ENEMY_Z) / (this.z + CONST.SHOT_SIZE - CONST.ENEMY_Z) + 240,
+      (this.x - enemyPosition + CONST.SHOT_SIZE * 0.7) * (-CONST.ENEMY_Z) / (this.z - CONST.SHOT_SIZE * 0.7 - CONST.ENEMY_Z) + 320,
+      CONST.PLAYER_HEIGHT * 0.33 * (-CONST.ENEMY_Z) / (this.z - CONST.SHOT_SIZE * 0.7 - CONST.ENEMY_Z) + 240,
+      (this.x - enemyPosition - CONST.SHOT_SIZE * 0.7) * (-CONST.ENEMY_Z) / (this.z - CONST.SHOT_SIZE * 0.7 - CONST.ENEMY_Z) + 320,
+      CONST.PLAYER_HEIGHT * 0.33 * (-CONST.ENEMY_Z) / (this.z - CONST.SHOT_SIZE * 0.7 - CONST.ENEMY_Z) + 240,
+      CONST.ENEMY_COLOR
     );
   }
 

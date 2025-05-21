@@ -4,6 +4,7 @@ import useAnimateEffect from '@/hooks/animate';
 import useKeyboardEffect from '@/hooks/keyboard';
 import Field from '@/gameLogic/field';
 import Player from '@/gameLogic/player';
+import Enemy from '@/gameLogic/enemy';
 
 type Props = {
   setPlayerLife: (life: number) => void;
@@ -15,6 +16,7 @@ const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
   const keysPressed = useKeyboardEffect();
   const field = useRef(new Field);
   const player = useRef<Player | null>(null);
+  const enemy = useRef(new Enemy);
 
   useEffect(() => {
     // 上下キーでスクロールが発生しないように
@@ -43,10 +45,11 @@ const GameCanvas = ({ setPlayerLife, setScore }: Props) => {
     }
 
     ctx.current.clearRect(0, 0, 640, 480);
-    field.current.draw(ctx.current, 0.0);
-    player.current.draw(ctx.current, 0.0);
+    field.current.draw(ctx.current, enemy.current.position);
+    player.current.draw(ctx.current, enemy.current.position);
 
-    player.current.tick(ctx.current, keysPressed, 0.0);
+    player.current.tick(ctx.current, keysPressed, enemy.current.position);
+    enemy.current.tick(ctx.current, player.current.position);
   };
 
   useAnimateEffect(animateCallback);
