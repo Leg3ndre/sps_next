@@ -1,7 +1,8 @@
 import * as CONST from '@/constants/game';
 import CharacterBase from './characterBase';
 import Shot from './shot';
-import { drawFrame } from './freezeUtil';
+import { drawFrame } from './freezeUtils';
+import { perspective, transport } from './projectionUtils';
 
 class Player extends CharacterBase {
   protected side = CONST.SIDE_PLAYER;
@@ -69,15 +70,10 @@ class Player extends CharacterBase {
       50.0 * (1.0 - Math.pow((this.freeze - 20) / CONST.FREEZE_WAIT, 5.0))
     ];
     for(let i = 0; i < 2; i++) {
-      drawFrame(
-        ctx,
-        (this.position - enemyPosition - frz_w[i] / 2.0) * CONST.MAG_END + 320,
-        (CONST.PLAYER_HEIGHT - this.image.height / 2.0 - frz_w[i] / 2.0) * CONST.MAG_END + 240,
-        (this.position - enemyPosition + frz_w[i] / 2.0) * CONST.MAG_END + 320,
-        (CONST.PLAYER_HEIGHT - this.image.height / 2.0 + frz_w[i] / 2.0) * CONST.MAG_END + 240,
-        "white",
-        1
-      );
+      const imageCenterY = CONST.PLAYER_HEIGHT - this.image.height / 2.0;
+      const pt1 = perspective(transport({ x: this.position - frz_w[i] / 2.0, y: imageCenterY - frz_w[i] / 2.0 }, enemyPosition), CONST.MAG_END);
+      const pt2 = perspective(transport({ x: this.position + frz_w[i] / 2.0, y: imageCenterY + frz_w[i] / 2.0 }, enemyPosition), CONST.MAG_END);
+      drawFrame(ctx, pt1, pt2, "white", 1);
     }
   }
 }

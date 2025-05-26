@@ -1,7 +1,7 @@
 import * as CONST from '@/constants/game';
 import CharacterBase from './characterBase';
 import Shot from './shot';
-import { drawFrame } from './freezeUtil';
+import { drawFrame } from './freezeUtils';
 
 class Enemy extends CharacterBase {
   protected side = CONST.SIDE_ENEMY;
@@ -39,13 +39,9 @@ class Enemy extends CharacterBase {
   drawFreezed(ctx: CanvasRenderingContext2D, interval = 5) {
     for (let i = 0; i < (CONST.FREEZE_WAIT - 50) / interval; i++) {
       const frz_w = Math.max(1.0 - Math.pow((this.freeze + i * interval) / CONST.FREEZE_WAIT, 5.0), 0.0);
-      drawFrame(
-        ctx,
-        (1.0 - frz_w) * 320, (1.0 - frz_w) * 240,
-        (1.0 + frz_w) * 320, (1.0 + frz_w) * 240,
-        "white",
-        5
-      );
+      const pt1 = { x: -frz_w * 320 + 320, y: -frz_w * 240 + 240 };
+      const pt2 = { x: frz_w * 320 + 320,  y: frz_w * 240 + 240  };
+      drawFrame(ctx, pt1, pt2, "white", 5);
     }
   }
 }

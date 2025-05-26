@@ -1,39 +1,33 @@
 import * as CONST from '@/constants/game';
+import { perspective, projection, transport, vec2D, vec3D } from '@/gameLogic/projectionUtils';
 
 class Field {
   draw(ctx: CanvasRenderingContext2D, enemyPosition: number): void {
     for (let i = 0; i <= CONST.LINE_NUM_X; i++) {
-      this.drawLine(
-        ctx,
-        (CONST.LINE_SPLIT_X * i - CONST.WIDTH - enemyPosition) * CONST.MAG_START + 320,
-        CONST.PLAYER_HEIGHT * CONST.MAG_START + 240,
-        (CONST.LINE_SPLIT_X * i - CONST.WIDTH - enemyPosition) * CONST.MAG_END + 320,
-        CONST.PLAYER_HEIGHT * CONST.MAG_END + 240
-      );
+      const pt1 = perspective(transport({ x: CONST.LINE_SPLIT_X * i - CONST.WIDTH, y: CONST.PLAYER_HEIGHT }, enemyPosition), CONST.MAG_START);
+      const pt2 = perspective(transport({ x: CONST.LINE_SPLIT_X * i - CONST.WIDTH, y: CONST.PLAYER_HEIGHT }, enemyPosition), CONST.MAG_END);
+      this.drawLine(ctx, pt1, pt2);
     }
 
     for (let i = 0; i <= CONST.LINE_NUM_Y; i++) {
-      this.drawLine(
-        ctx,
-        (-CONST.WIDTH - enemyPosition) * (-CONST.ENEMY_Z) / (CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z  - CONST.ENEMY_Z) + 320,
-        CONST.PLAYER_HEIGHT * (-CONST.ENEMY_Z) / (CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z  - CONST.ENEMY_Z) + 240,
-        (CONST.WIDTH - enemyPosition) * (-CONST.ENEMY_Z) / (CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z  - CONST.ENEMY_Z) + 320,
-        CONST.PLAYER_HEIGHT * (-CONST.ENEMY_Z) / (CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z  - CONST.ENEMY_Z) + 240
-      );
+      const pt1 = projection({ x: -CONST.WIDTH, y: CONST.PLAYER_HEIGHT, z: CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z }, enemyPosition);
+      const pt2 = projection({ x: CONST.WIDTH,  y: CONST.PLAYER_HEIGHT, z: CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z }, enemyPosition);
+      this.drawLine(ctx, pt1, pt2);
     }
   }
 
   private drawLine(
     ctx: CanvasRenderingContext2D,
-    tlx: number, tly: number, brx: number, bry: number,
-    col = "yellow",
-    lw = 1
+    topLeft: vec2D,
+    bottomRight: vec2D,
+    color = "yellow",
+    lineWidth = 1,
   ) {
     ctx.beginPath();
-    ctx.moveTo(tlx, tly);
-    ctx.lineTo(brx, bry);
-    ctx.strokeStyle = col;
-    ctx.lineWidth = lw;
+    ctx.moveTo(topLeft.x, topLeft.y);
+    ctx.lineTo(bottomRight.x, bottomRight.y);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
     ctx.stroke();
   }
 }
