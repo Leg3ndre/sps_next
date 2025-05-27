@@ -21,8 +21,6 @@ export const LINE_SPLIT_X = 50;
 export const LINE_NUM_X = WIDTH * 2 / LINE_SPLIT_X;
 export const LINE_NUM_Y = 6;
 export const LINE_SPLIT_Y = (LINE_END_Z - LINE_START_Z) / LINE_NUM_Y;
-export const MAG_START = (-ENEMY_Z) / (LINE_START_Z - ENEMY_Z);
-export const MAG_END = (-ENEMY_Z) / (LINE_END_Z - ENEMY_Z);
 
 // Shot properties
 export const MAX_SHOT_NUM = 5;

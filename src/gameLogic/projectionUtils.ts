@@ -17,7 +17,7 @@ export const projection = (position: vec3D, enemyPosition: number): vec2D => {
   return perspective(transport(position, enemyPosition), scale);
 }
 
-export const transport = (position: vec2D, enemyPosition: number): vec2D => {
+const transport = (position: vec2D, enemyPosition: number): vec2D => {
   const camera = getCameraPosition(enemyPosition);
   return {
     x: position.x - camera.x,
@@ -25,7 +25,7 @@ export const transport = (position: vec2D, enemyPosition: number): vec2D => {
   };
 }
 
-export const perspective = (position: vec2D, scale: number): vec2D => {
+const perspective = (position: vec2D, scale: number): vec2D => {
   return {
     x: position.x * scale + 320,
     y: position.y * scale + 240,
