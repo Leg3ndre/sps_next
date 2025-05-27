@@ -1,5 +1,6 @@
 import * as CONST from '@/constants/game';
-import { projection, vec2D, vec3D } from '@/gameLogic/projectionUtils';
+import { projection, vec3D } from '@/gameLogic/projectionUtils';
+import { drawTriangle } from '@/gameLogic/drawUtils';
 
 class Shot {
   private x;
@@ -38,7 +39,7 @@ class Shot {
       [pt1, pt2, pt3] = this.buildEnemyShot(enemyPosition);
       color = CONST.ENEMY_COLOR;
     }
-    this.drawTriangle(ctx, pt1, pt2, pt3, color);
+    drawTriangle(ctx, pt1, pt2, pt3, color);
   }
 
   private buildPlayerShot(enemyPosition: number) {
@@ -53,23 +54,6 @@ class Shot {
     const pt2: vec3D = { x: this.x + CONST.SHOT_SIZE * 0.7, y: CONST.PLAYER_HEIGHT * 0.33, z: this.z - CONST.SHOT_SIZE * 0.7 };
     const pt3: vec3D = { x: this.x - CONST.SHOT_SIZE * 0.7, y: CONST.PLAYER_HEIGHT * 0.33, z: this.z - CONST.SHOT_SIZE * 0.7 };
     return [pt1, pt2, pt3].map((pt) => projection(pt, enemyPosition));
-  }
-
-  private drawTriangle(
-    ctx: CanvasRenderingContext2D,
-    pt1: vec2D,
-    pt2: vec2D,
-    pt3: vec2D,
-    color: string,
-  ) {
-    ctx.beginPath();
-    ctx.moveTo(pt1.x, pt1.y);
-    ctx.lineTo(pt2.x, pt2.y);
-    ctx.lineTo(pt3.x, pt3.y);
-    ctx.lineTo(pt1.x, pt1.y);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1;
-    ctx.stroke();
   }
 
   hits(position: number) {

@@ -13,23 +13,16 @@ export type vec2D = {
 
 export const projection = (position: vec3D, enemyPosition: number): vec2D => {
   const camera = getCameraPosition(enemyPosition);
-  const scale = -camera.z / (position.z - camera.z);
-  return perspective(transport(position, enemyPosition), scale);
+  const scale = getPerspectiveScale(position, enemyPosition);
+  return {
+    x: (position.x - camera.x) * scale + 320,
+    y: (position.y - camera.y) * scale + 240,
+  };
 }
 
-const transport = (position: vec2D, enemyPosition: number): vec2D => {
+export const getPerspectiveScale = (position: vec3D, enemyPosition: number): number => {
   const camera = getCameraPosition(enemyPosition);
-  return {
-    x: position.x - camera.x,
-    y: position.y - camera.y,
-  };
-}
-
-const perspective = (position: vec2D, scale: number): vec2D => {
-  return {
-    x: position.x * scale + 320,
-    y: position.y * scale + 240,
-  };
+  return (-camera.z / (position.z - camera.z));
 }
 
 const getCameraPosition = (enemyPosition: number): vec3D => {

@@ -1,8 +1,8 @@
 import * as CONST from '@/constants/game';
-import CharacterBase from './characterBase';
-import Shot from './shot';
-import { drawFrame } from './freezeUtils';
-import { projection } from './projectionUtils';
+import CharacterBase from '@/gameLogic/characterBase';
+import Shot from '@/gameLogic/shot';
+import { drawFrame } from '@/gameLogic/drawUtils';
+import { getPerspectiveScale, projection, vec3D } from '@/gameLogic/projectionUtils';
 
 class Player extends CharacterBase {
   protected side = CONST.SIDE_PLAYER;
@@ -16,13 +16,15 @@ class Player extends CharacterBase {
   }
 
   draw(ctx: CanvasRenderingContext2D, enemyPosition: number): void {
-    ctx.drawImage(
-      this.image,
-      (this.position - enemyPosition - this.image.width/2.0) * (-CONST.ENEMY_Z / (CONST.LINE_END_Z - CONST.ENEMY_Z)) + 320,
-      (CONST.PLAYER_HEIGHT - this.image.height) * (-CONST.ENEMY_Z / (CONST.LINE_END_Z - CONST.ENEMY_Z)) + 240,
-      this.image.width * (-CONST.ENEMY_Z / (CONST.LINE_END_Z - CONST.ENEMY_Z)),
-      this.image.height * (-CONST.ENEMY_Z / (CONST.LINE_END_Z - CONST.ENEMY_Z))
-    );
+    const position: vec3D = {
+      x: this.position - this.image.width / 2.0,
+      y: CONST.PLAYER_HEIGHT - this.image.height,
+      z: CONST.LINE_END_Z,
+    };
+    const pt = projection(position, enemyPosition);
+    const scale = getPerspectiveScale(position, enemyPosition);
+    ctx.drawImage(this.image, pt.x, pt.y, this.image.width * scale, this.image.height * scale);
+
     this.drawShots(ctx, enemyPosition);
     if (this.freeze > 0) this.drawFreezed(ctx, enemyPosition);
   }
@@ -71,9 +73,10 @@ class Player extends CharacterBase {
     ];
     for(let i = 0; i < 2; i++) {
       const imageCenterY = CONST.PLAYER_HEIGHT - this.image.height / 2.0;
-      const pt1 = projection({ x: this.position - frz_w[i] / 2.0, y: imageCenterY - frz_w[i] / 2.0, z: CONST.LINE_END_Z }, enemyPosition);
-      const pt2 = projection({ x: this.position + frz_w[i] / 2.0, y: imageCenterY + frz_w[i] / 2.0, z: CONST.LINE_END_Z }, enemyPosition);
-      drawFrame(ctx, pt1, pt2, "white", 1);
+      const pt1: vec3D = { x: this.position - frz_w[i] / 2.0, y: imageCenterY - frz_w[i] / 2.0, z: CONST.LINE_END_Z };
+      const pt2: vec3D = { x: this.position + frz_w[i] / 2.0, y: imageCenterY + frz_w[i] / 2.0, z: CONST.LINE_END_Z };
+      const [ppt1, ppt2] = [pt1, pt2].map((pt) => projection(pt, enemyPosition));
+      drawFrame(ctx, ppt1, ppt2, "white", 1);
     }
   }
 }

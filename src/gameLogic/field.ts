@@ -1,34 +1,22 @@
 import * as CONST from '@/constants/game';
-import { projection, vec2D } from '@/gameLogic/projectionUtils';
+import { projection, vec3D } from '@/gameLogic/projectionUtils';
+import { drawLine } from '@/gameLogic/drawUtils';
 
 class Field {
   draw(ctx: CanvasRenderingContext2D, enemyPosition: number): void {
     for (let i = 0; i <= CONST.LINE_NUM_X; i++) {
-      const pt1 = projection({ x: CONST.LINE_SPLIT_X * i - CONST.WIDTH, y: CONST.PLAYER_HEIGHT, z: CONST.LINE_START_Z }, enemyPosition);
-      const pt2 = projection({ x: CONST.LINE_SPLIT_X * i - CONST.WIDTH, y: CONST.PLAYER_HEIGHT, z: CONST.LINE_END_Z   }, enemyPosition);
-      this.drawLine(ctx, pt1, pt2);
+      const pt1: vec3D = { x: CONST.LINE_SPLIT_X * i - CONST.WIDTH, y: CONST.PLAYER_HEIGHT, z: CONST.LINE_START_Z };
+      const pt2: vec3D = { x: CONST.LINE_SPLIT_X * i - CONST.WIDTH, y: CONST.PLAYER_HEIGHT, z: CONST.LINE_END_Z   };
+      const [ppt1, ppt2] = [pt1, pt2].map((pt) => projection(pt, enemyPosition));
+      drawLine(ctx, ppt1, ppt2);
     }
 
     for (let i = 0; i <= CONST.LINE_NUM_Y; i++) {
-      const pt1 = projection({ x: -CONST.WIDTH, y: CONST.PLAYER_HEIGHT, z: CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z }, enemyPosition);
-      const pt2 = projection({ x: CONST.WIDTH,  y: CONST.PLAYER_HEIGHT, z: CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z }, enemyPosition);
-      this.drawLine(ctx, pt1, pt2);
+      const pt1: vec3D = { x: -CONST.WIDTH, y: CONST.PLAYER_HEIGHT, z: CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z };
+      const pt2: vec3D = { x: CONST.WIDTH,  y: CONST.PLAYER_HEIGHT, z: CONST.LINE_SPLIT_Y * i + CONST.LINE_START_Z };
+      const [ppt1, ppt2] = [pt1, pt2].map((pt) => projection(pt, enemyPosition));
+      drawLine(ctx, ppt1, ppt2);
     }
-  }
-
-  private drawLine(
-    ctx: CanvasRenderingContext2D,
-    topLeft: vec2D,
-    bottomRight: vec2D,
-    color = "yellow",
-    lineWidth = 1,
-  ) {
-    ctx.beginPath();
-    ctx.moveTo(topLeft.x, topLeft.y);
-    ctx.lineTo(bottomRight.x, bottomRight.y);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = lineWidth;
-    ctx.stroke();
   }
 }
 
