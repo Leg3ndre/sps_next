@@ -4,6 +4,7 @@ import * as CONST from '@/constants/game';
 import GameDesc from '@/components/gameDesc';
 import GameCanvas from '@/components/gameCanvas';
 import RetryButton from '@/components/retryButton';
+import BgmAudio from '@/components/bgmAudio';
 
 export default function Home() {
   const [playerLife, setPlayerLine] = useState(CONST.INITIAL_LIFE);
@@ -21,6 +22,7 @@ export default function Home() {
         setEnemyLife={setEnemyLife}
       />
       <RetryButton />
+      <BgmAudio />
       <GameDesc />
     </>
   );
