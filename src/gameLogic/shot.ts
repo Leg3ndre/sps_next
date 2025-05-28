@@ -43,16 +43,16 @@ class Shot {
   }
 
   private buildPlayerShot(enemyPosition: number) {
-    const pt1: vec3D = { x: this.x,                         y: CONST.PLAYER_HEIGHT * 0.67, z: this.z - CONST.SHOT_SIZE       };
-    const pt2: vec3D = { x: this.x + CONST.SHOT_SIZE * 0.7, y: CONST.PLAYER_HEIGHT * 0.33, z: this.z + CONST.SHOT_SIZE * 0.7 };
-    const pt3: vec3D = { x: this.x - CONST.SHOT_SIZE * 0.7, y: CONST.PLAYER_HEIGHT * 0.33, z: this.z + CONST.SHOT_SIZE * 0.7 };
+    const pt1: vec3D = { x: this.x,                         y: CONST.CARACTER_HEIGHT * 0.67, z: this.z - CONST.SHOT_SIZE       };
+    const pt2: vec3D = { x: this.x + CONST.SHOT_SIZE * 0.7, y: CONST.CARACTER_HEIGHT * 0.33, z: this.z + CONST.SHOT_SIZE * 0.7 };
+    const pt3: vec3D = { x: this.x - CONST.SHOT_SIZE * 0.7, y: CONST.CARACTER_HEIGHT * 0.33, z: this.z + CONST.SHOT_SIZE * 0.7 };
     return [pt1, pt2, pt3].map((pt) => projection(pt, enemyPosition));
   }
 
   private buildEnemyShot(enemyPosition: number) {
-    const pt1: vec3D = { x: this.x,                         y: CONST.PLAYER_HEIGHT * 0.67, z: this.z + CONST.SHOT_SIZE       };
-    const pt2: vec3D = { x: this.x + CONST.SHOT_SIZE * 0.7, y: CONST.PLAYER_HEIGHT * 0.33, z: this.z - CONST.SHOT_SIZE * 0.7 };
-    const pt3: vec3D = { x: this.x - CONST.SHOT_SIZE * 0.7, y: CONST.PLAYER_HEIGHT * 0.33, z: this.z - CONST.SHOT_SIZE * 0.7 };
+    const pt1: vec3D = { x: this.x,                         y: CONST.CARACTER_HEIGHT * 0.67, z: this.z + CONST.SHOT_SIZE       };
+    const pt2: vec3D = { x: this.x + CONST.SHOT_SIZE * 0.7, y: CONST.CARACTER_HEIGHT * 0.33, z: this.z - CONST.SHOT_SIZE * 0.7 };
+    const pt3: vec3D = { x: this.x - CONST.SHOT_SIZE * 0.7, y: CONST.CARACTER_HEIGHT * 0.33, z: this.z - CONST.SHOT_SIZE * 0.7 };
     return [pt1, pt2, pt3].map((pt) => projection(pt, enemyPosition));
   }
 

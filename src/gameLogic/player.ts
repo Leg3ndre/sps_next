@@ -18,8 +18,8 @@ class Player extends CharacterBase {
   draw(ctx: CanvasRenderingContext2D, enemyPosition: number): void {
     const position: vec3D = {
       x: this.position - this.image.width / 2.0,
-      y: CONST.PLAYER_HEIGHT - this.image.height,
-      z: CONST.LINE_END_Z,
+      y: CONST.PLAYER_Y + (CONST.CARACTER_HEIGHT - this.image.height),
+      z: CONST.PLAYER_Z,
     };
     const pt = projection(position, enemyPosition);
     const scale = getPerspectiveScale(position, enemyPosition);
@@ -72,9 +72,9 @@ class Player extends CharacterBase {
       50.0 * (1.0 - Math.pow((this.freeze - 20) / CONST.FREEZE_WAIT, 5.0))
     ];
     for(let i = 0; i < 2; i++) {
-      const imageCenterY = CONST.PLAYER_HEIGHT - this.image.height / 2.0;
-      const pt1: vec3D = { x: this.position - frz_w[i] / 2.0, y: imageCenterY - frz_w[i] / 2.0, z: CONST.LINE_END_Z };
-      const pt2: vec3D = { x: this.position + frz_w[i] / 2.0, y: imageCenterY + frz_w[i] / 2.0, z: CONST.LINE_END_Z };
+      const imageCenterY = CONST.PLAYER_Y + (CONST.CARACTER_HEIGHT - this.image.height / 2.0);
+      const pt1: vec3D = { x: this.position - frz_w[i] / 2.0, y: imageCenterY - frz_w[i] / 2.0, z: CONST.PLAYER_Z };
+      const pt2: vec3D = { x: this.position + frz_w[i] / 2.0, y: imageCenterY + frz_w[i] / 2.0, z: CONST.PLAYER_Z };
       const [ppt1, ppt2] = [pt1, pt2].map((pt) => projection(pt, enemyPosition));
       drawFrame(ctx, ppt1, ppt2, "white", 1);
     }

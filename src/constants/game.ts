@@ -13,14 +13,19 @@ export const FREEZE_WAIT = 120.0;
 export const INITIAL_LIFE = 5;
 
 // Display properties
-export const ENEMY_Z = -100.0;
-export const PLAYER_HEIGHT = 20;
+export const CARACTER_HEIGHT = 20;
+export const LINE_MIN_X = -WIDTH;
+export const LINE_MAX_X = WIDTH;
 export const LINE_START_Z = -90;
 export const LINE_END_Z = 100;
-export const LINE_SPLIT_X = 50;
-export const LINE_NUM_X = WIDTH * 2 / LINE_SPLIT_X;
-export const LINE_NUM_Y = 6;
-export const LINE_SPLIT_Y = (LINE_END_Z - LINE_START_Z) / LINE_NUM_Y;
+export const LINE_NUM_X = 16;
+export const LINE_NUM_Z = 6;
+
+// Character properties
+export const PLAYER_Y = 0.0;
+export const PLAYER_Z = LINE_END_Z;
+export const ENEMY_Y = 0.0;
+export const ENEMY_Z = -100.0;
 
 // Shot properties
 export const MAX_SHOT_NUM = 5;
