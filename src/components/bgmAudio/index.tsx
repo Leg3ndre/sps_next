@@ -11,11 +11,16 @@ const BgmAudio = () => {
   }, []);
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key != 'a' && e.key != 'd' && e.key != 'ArrowLeft' && e.key != 'ArrowRight') return;
+    if (
+      !(e.key == 'a' || e.key == 'd' || e.key == 'ArrowLeft' || e.key == 'ArrowRight')
+    ) return;
 
     const audioElm = document.getElementById('bgm') as HTMLAudioElement;
     audioElm.play();
   }
+
+  const title = 'Look at me!!';
+  const composer = 'Mr.O';
 
   return(
     <div className={styles.bgm}>
@@ -23,7 +28,7 @@ const BgmAudio = () => {
         <p>お使いのブラウザでは再生できません</p>
       </audio>
       <span className={styles.bgmDesc}>
-        BGM: <b>Look at me!!</b> - <span className={styles.composer}>by Mr.O</span>
+        BGM: <b>{title}</b> - <span className={styles.composer}>by {composer}</span>
       </span>
     </div>
   );
