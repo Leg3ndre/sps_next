@@ -12,7 +12,7 @@ class Player extends CharacterBase {
   constructor() {
     super();
     this.image = new Image;
-    this.image.src = "/player.png";
+    this.image.src = "./player.png";
   }
 
   draw(ctx: CanvasRenderingContext2D, enemyPosition: number): void {
