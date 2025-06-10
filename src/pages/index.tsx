@@ -5,6 +5,7 @@ import GameDesc from '@/components/gameDesc';
 import GameCanvas from '@/components/gameCanvas';
 import RetryButton from '@/components/retryButton';
 import BgmAudio from '@/components/bgmAudio';
+import GameVersion from '@/components/gameVersion';
 
 export default function Home() {
   const [playerLife, setPlayerLine] = useState(CONST.INITIAL_LIFE);
@@ -24,6 +25,7 @@ export default function Home() {
       <RetryButton />
       <BgmAudio />
       <GameDesc />
+      <GameVersion />
     </>
   );
 }
