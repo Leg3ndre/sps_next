@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import styles from './index.module.css';
+import * as CONST from '@/constants/game';
+import GameOver from '@/components/gameOver';
 import useAnimateEffect from '@/hooks/animate';
 import useKeyboardEffect from '@/hooks/keyboard';
 import Field from '@/gameLogic/field';
@@ -17,6 +19,7 @@ const GameCanvas = ({ setPlayerLife, setEnemyLife }: Props) => {
   const field = useRef(new Field);
   const player = useRef<Player | null>(null);
   const enemy = useRef(new Enemy);
+  const isGameOver = useRef(false);
 
   useEffect(() => {
     // 上下キーでスクロールが発生しないように
@@ -34,6 +37,13 @@ const GameCanvas = ({ setPlayerLife, setEnemyLife }: Props) => {
     player.current = new Player;
   }, []);
 
+  const checkGameOver = () => {
+    if (player.current && player.current.life <= 0) return true;
+    if (enemy.current.life <= 0) return true;
+
+    return false;
+  }
+
   const animateCallback = () => {
     if (ctx.current == null) {
       console.log("Cannot find canvas context!!");
@@ -50,17 +60,20 @@ const GameCanvas = ({ setPlayerLife, setEnemyLife }: Props) => {
     enemy.current.draw(ctx.current);
 
     player.current.tick(keysPressed, enemy.current.shotList);
-    setPlayerLife(player.current.life);
+    if (!isGameOver.current) setPlayerLife(player.current.life);
     enemy.current.tick(player.current.position, player.current.shotList);
-    setEnemyLife(enemy.current.life);
+    if (!isGameOver.current) setEnemyLife(enemy.current.life);
+    isGameOver.current = checkGameOver();
   };
 
   useAnimateEffect(animateCallback);
 
+  const playerLife = player.current ? player.current.life : CONST.INITIAL_LIFE;
   return (
-    <>
+    <div className={styles.gameContainer}>
       <canvas id="game" width={640} height={480} className={styles.gameCanvas} />
-    </>
+      <GameOver playerLife={playerLife} enemyLife={enemy.current.life} />
+    </div>
   );
 }
 
